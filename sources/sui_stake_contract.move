@@ -122,8 +122,8 @@ module sui_stake_contract::sui_staker {
     
     fun calculate_rewards(amount: u64, start_time: u64, current_time: u64): u64 {
         let time_staked = current_time - start_time;
-        // More precise calculation using milliseconds
-        let reward = (amount * REWARD_RATE * time_staked) / (BASIS_POINTS * MS_PER_YEAR);
+        // Reorder operations to prevent overflow and maintain precision
+        let reward = ((amount * REWARD_RATE) / BASIS_POINTS * time_staked) / MS_PER_YEAR;
         reward
     }
     
